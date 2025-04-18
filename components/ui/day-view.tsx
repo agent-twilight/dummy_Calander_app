@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { getHours, isCurrentDay } from "@/lib/getTime";
-
+import { EventRenderer } from "./event-renderer";
 
 
 export default function DayView() {
@@ -27,13 +27,13 @@ export default function DayView() {
       <div className="grid grid-cols-[auto_auto_1fr] px-4">
         <div className="w-16 border-r border-gray-300 text-xs">GMT +2</div>
         <div className="flex w-16 flex-col items-center">
-          <div className={cn("text-xs", isToday && "text-green-600")}>
+          <div className={cn("text-xs", isToday && "text-blue-600")}>
             {userSelectedDate.format("ddd")}{" "}
           </div>{" "}
           <div
             className={cn(
               "h-12 w-12 rounded-full p-2 text-2xl",
-              isToday && "bg-green-600 text-white",
+              isToday && "bg-blue-600 text-white",
             )}
           >
             {userSelectedDate.format("DD")}{" "}
@@ -66,19 +66,15 @@ export default function DayView() {
                   openPopover();
                 }}
               >
-
+                <EventRenderer
+                  events={events}
+                  date={userSelectedDate.hour(hour.hour())}
+                  view="day"
+                />
               </div>
             ))}
 
-            {/* Current time indicator */}
-            {isCurrentDay(userSelectedDate) && (
-              <div
-                className={cn("absolute h-0.5 w-full bg-red-500")}
-                style={{
-                  top: `${(currentTime.hour() / 24) * 100}%`,
-                }}
-              />
-            )}
+
           </div>
         </div>
       </ScrollArea>

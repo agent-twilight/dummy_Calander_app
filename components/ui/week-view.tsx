@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils'
 import { ScrollArea } from '@radix-ui/react-scroll-area'
 import { useEventStore } from '@/lib/store'
 import dayjs from 'dayjs'
+import { EventRenderer } from './event-renderer'
 
 
 
@@ -86,7 +87,11 @@ export default function WeekView() {
                         openPopover();
                       }}
                     >
-
+                      <EventRenderer
+                        events={events}
+                        date={dayDate.hour(hour.hour())}
+                        view="week"
+                      />
                     </div>
                   ))}
                   {/* Current time indicator */}
