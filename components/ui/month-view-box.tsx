@@ -2,6 +2,7 @@
 import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
 import React from "react";
+import { useEventStore, useDateStore } from "@/lib/store";
 
 
 
@@ -12,7 +13,9 @@ export default function MonthViewBox({
   day: dayjs.Dayjs | null;
   rowIndex: number;
 }) {
+  const { openPopover, events } = useEventStore();
 
+  const { setDate } = useDateStore();
 
   if (!day) {
     return (
@@ -24,7 +27,11 @@ export default function MonthViewBox({
 
   const isToday = day.format("DD-MM-YY") === dayjs().format("DD-MM-YY");
 
-
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setDate(day);
+    openPopover();
+  };
 
   return (
     <div
@@ -32,7 +39,7 @@ export default function MonthViewBox({
         "group relative flex flex-col items-center gap-y-2 border",
         "transition-all hover:bg-violet-50",
       )}
-
+      onClick={handleClick}
     >
       <div className="flex flex-col items-center">
         {rowIndex === 0 && (
@@ -50,7 +57,7 @@ export default function MonthViewBox({
           {isFirstDayOfMonth ? day.format("MMM D") : day.format("D")}
         </h4>
       </div>
-    
+
     </div>
   );
 }

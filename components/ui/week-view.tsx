@@ -1,17 +1,28 @@
 import React from 'react'
+import { useState, useEffect } from 'react'
 
 import { getWeekDays } from '@/lib/getTime'
 import { getHours } from '@/lib/getTime'
 import { useDateStore } from '@/lib/store'
 import { cn } from '@/lib/utils'
 import { ScrollArea } from '@radix-ui/react-scroll-area'
+import { useEventStore } from '@/lib/store'
+import dayjs from 'dayjs'
+
 
 
 export default function WeekView() {
+  const [currentTime, setCurrentTime] = useState(dayjs());
+  const { openPopover, events } = useEventStore();
 
-  const {userSelectedDate} = useDateStore()
+  const { userSelectedDate, setDate } = useDateStore();
 
-  const Days = getWeekDays(userSelectedDate)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(dayjs());
+    }, 60000); // Update every minute
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <>
@@ -26,7 +37,7 @@ export default function WeekView() {
 
         {getWeekDays(userSelectedDate).map(({ currentDate, today }, index) => (
           <div key={index} className="flex flex-col items-center">
-            <div className={cn("text-xs", today && "text-gray-300")}>
+            <div className={cn("text-xs", today && "text-green-600")}>
               {currentDate.format("ddd")}
             </div>
             <div
@@ -70,12 +81,24 @@ export default function WeekView() {
                     <div
                       key={i}
                       className="relative flex h-16 cursor-pointer flex-col items-center gap-y-2 border-b border-gray-300 hover:bg-gray-100"
-
+                      onClick={() => {
+                        setDate(dayDate.hour(hour.hour()));
+                        openPopover();
+                      }}
                     >
 
                     </div>
                   ))}
+                  {/* Current time indicator */}
 
+                  {isCurrentDay(dayDate) && today && (
+                    <div
+                      className={cn("absolute h-0.5 w-full bg-red-500")}
+                      style={{
+                        top: `${(currentTime.hour() / 24) * 100}%`,
+                      }}
+                    />
+                  )}
                 </div>
               );
             },
@@ -85,4 +108,3 @@ export default function WeekView() {
     </>
   );
 }
-
