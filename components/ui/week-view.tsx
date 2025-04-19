@@ -1,15 +1,10 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
-
-import { getWeekDays } from '@/lib/getTime'
-import { getHours } from '@/lib/getTime'
-import { useDateStore } from '@/lib/store'
-import { cn } from '@/lib/utils'
-import { ScrollArea } from '@radix-ui/react-scroll-area'
-import { useEventStore } from '@/lib/store'
-import dayjs from 'dayjs'
-import { EventRenderer } from './event-renderer'
-
+import { getHours, getWeekDays } from "@/lib/getTime";
+import { useDateStore, useEventStore } from "@/lib/store";
+import { cn } from "@/lib/utils";
+import dayjs from "dayjs";
+import React, { useEffect, useState } from "react";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
+import { EventRenderer } from "./event-renderer";
 
 
 export default function WeekView() {
@@ -38,13 +33,13 @@ export default function WeekView() {
 
         {getWeekDays(userSelectedDate).map(({ currentDate, today }, index) => (
           <div key={index} className="flex flex-col items-center">
-            <div className={cn("text-xs", today && "text-green-600")}>
+            <div className={cn("text-xs", today && "text-blue-600")}>
               {currentDate.format("ddd")}
             </div>
             <div
               className={cn(
                 "h-12 w-12 rounded-full p-2 text-2xl",
-                today && "bg-green-600 text-white",
+                today && "bg-blue-600 text-white",
               )}
             >
               {currentDate.format("DD")}{" "}
@@ -94,16 +89,7 @@ export default function WeekView() {
                       />
                     </div>
                   ))}
-                  {/* Current time indicator */}
 
-                  {isCurrentDay(dayDate) && today && (
-                    <div
-                      className={cn("absolute h-0.5 w-full bg-red-500")}
-                      style={{
-                        top: `${(currentTime.hour() / 24) * 100}%`,
-                      }}
-                    />
-                  )}
                 </div>
               );
             },

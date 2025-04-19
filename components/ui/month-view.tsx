@@ -1,7 +1,9 @@
-import { getMonth } from '@/lib/getTime'
+'use client'
+
+
 import React, { Fragment } from 'react'
 import MonthViewBox from './month-view-box'
-import { useDateStore } from '@/lib/store'
+import { useDateStore } from '@/lib/store';
 
 export default function MonthView() {
 
@@ -18,9 +20,3 @@ export default function MonthView() {
     </section>
   )
 }
-
-
-
-
-
-

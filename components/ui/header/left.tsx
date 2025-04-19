@@ -1,10 +1,8 @@
-
 "use client";
 
 import React from "react";
 import { Menu } from "lucide-react";
 import { Button } from "../button";
-import Image from "next/image";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { useDateStore, useToggleSideBarStore, useViewStore } from "@/lib/store";
 import dayjs from "dayjs";
@@ -78,7 +76,7 @@ export default function HeaderLeft() {
         >
           <Menu className="size-6" />
         </Button>
-
+        
         <h1 className="text-xl">Calendar</h1>
       </div>
 

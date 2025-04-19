@@ -1,11 +1,8 @@
-
+import { useDateStore, useEventStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
 import React from "react";
-import { useEventStore, useDateStore } from "@/lib/store";
 import { EventRenderer } from "./event-renderer";
-import { monthEvents } from "@/lib/data";
-
 
 
 export default function MonthViewBox({
@@ -53,13 +50,13 @@ export default function MonthViewBox({
           className={cn(
             "text-center text-sm",
             isToday &&
-              "flex h-8 w-8 items-center justify-center rounded-full bg-green-600 text-white",
+              "flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white",
           )}
         >
           {isFirstDayOfMonth ? day.format("MMM D") : day.format("D")}
         </h4>
       </div>
-      <EventRenderer date={day} view="month" events={monthEvents} />
+      <EventRenderer date={day} view="month" events={events} />
     </div>
   );
 }

@@ -11,7 +11,7 @@ import { IoCloseSharp } from "react-icons/io5";
 import { IoMdCalendar } from "react-icons/io";
 import { FiClock } from "react-icons/fi";
 import AddTime from "./add-time";
-// import { createEvent } from "@/app/actions/event-actions";
+import { createEvent } from "@/app/actions/event-actions";
 import { cn } from "@/lib/utils";
 
 interface EventPopoverProps {
@@ -59,6 +59,26 @@ export default function EventPopover({
     e.stopPropagation();
   };
 
+  async function onSubmit(formData: FormData) {
+    setError(null);
+    setSuccess(null);
+    startTransition(async () => {
+      try {
+        const result = await createEvent(formData);
+        if ("error" in result) {
+          setError(result.error);
+        } else if (result.success) {
+          setSuccess(result.success);
+          setTimeout(() => {
+            onClose();
+          }, 2000);
+        }
+      } catch {
+        setError("An unexpected error occurred. Please try again.");
+      }
+    });
+  }
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
@@ -66,11 +86,11 @@ export default function EventPopover({
     >
       <div
         ref={popoverRef}
-        className="w-full max-w-lg rounded-lg bg-white shadow-lg" // Changed from max-w-md to max-w-lg for larger size
+        className="w-full max-w-md rounded-lg bg-white shadow-lg"
         onClick={handlePopoverClick}
       >
-        <div className="mb-2 flex items-center justify-between rounded-t-lg bg-slate-100 p-4 border-b"> {/* Added padding and border */}
-          <h2 className="text-lg font-semibold">New Event</h2> {/* Added title */}
+        <div className="mb-2 flex items-center justify-between rounded-md bg-slate-100 p-1">
+          <HiOutlineMenuAlt4 />
           <Button
             variant="ghost"
             size="icon"
@@ -80,7 +100,7 @@ export default function EventPopover({
             <IoCloseSharp className="h-4 w-4" />
           </Button>
         </div>
-        <form className="space-y-4 p-6">
+        <form className="space-y-4 p-6" action={onSubmit}>
           <div>
             <Input
               type="text"
@@ -89,6 +109,7 @@ export default function EventPopover({
               className="my-4 rounded-none border-0 border-b text-2xl focus-visible:border-b-2 focus-visible:border-b-blue-600 focus-visible:ring-0 focus-visible:ring-offset-0"
             />
           </div>
+
 
           <div className="flex items-center space-x-3">
             <FiClock className="size-5 text-gray-600" />
@@ -99,6 +120,8 @@ export default function EventPopover({
               <input type="hidden" name="time" value={selectedTime} />
             </div>
           </div>
+
+
 
           <div className="flex items-center space-x-3">
             <HiOutlineMenuAlt2 className="size-5 text-slate-600" />
@@ -112,6 +135,8 @@ export default function EventPopover({
               )}
             />
           </div>
+
+
 
           <div className="flex justify-end space-x-2">
             <Button type="submit" disabled={isPending}>

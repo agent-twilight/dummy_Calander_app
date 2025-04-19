@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 import { getMonth } from "./getTime";
 import { Dayjs } from "dayjs";
 
-
 interface ViewStoreType {
   selectedView: string;
   setView: (value: string) => void;
